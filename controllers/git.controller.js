@@ -2,11 +2,10 @@ const { generateOptions } = require("../utils");
 const https = require("https");
 
 const getUser = async (req, res) => {
-  const user = req.params.user;
-  const options = generateOptions("/users/" + user);
+  const options = generateOptions("/users/dersibcha");
 
   https
-    .get(options, function (apiResponse) {
+    .get(options, (apiResponse) => {
       apiResponse.pipe(res);
     })
     .on("error", (e) => {
@@ -16,12 +15,11 @@ const getUser = async (req, res) => {
 };
 
 const getRepo = async (req, res) => {
-  const user = req.params.user;
   const reponame = req.params.reponame;
-  const options = generateOptions("/repos/" + user + "/" + reponame);
+  const options = generateOptions("/repos/dersibcha/" + reponame);
 
   https
-    .get(options, function (apiResponse) {
+    .get(options, (apiResponse) => {
       apiResponse.pipe(res);
     })
     .on("error", (e) => {
@@ -31,12 +29,10 @@ const getRepo = async (req, res) => {
 };
 
 const getRepos = async (req, res) => {
-  const user = req.params.user;
-
-  const options = generateOptions("/users/" + user + "/repos");
+  const options = generateOptions("/users/dersibcha/repos");
 
   https
-    .get(options, function (apiResponse) {
+    .get(options, (apiResponse) => {
       apiResponse.pipe(res);
     })
     .on("error", (e) => {

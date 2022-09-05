@@ -3,28 +3,38 @@ const { StatusCodes, ReasonPhrases } = require("http-status-codes");
 require("dotenv").config();
 sendGridMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-const getMessage = (email) => {
-  const body = "New Contact with email " + email;
+const getMessage = (email, subject, message) => {
+  const body = "New Contact with email " + email + " <br> message: " + message;
   return {
-    to: email,
+    to: "derfelsib@gmail.com",
     from: "derfelsib@gmail.com",
-    subject: "New contact",
+    subject: subject,
     text: body,
     html: `<strong>${body}</strong>`,
   };
 };
 
 const sendEmail = async (req, res) => {
-  const email = req.params.email;
-  console.log("Sending test email");
+  const email = req.body?.email;
+  const subject = req.body?.subject;
+  const message = req.body?.message;
+  //res.json({ requestBody: req.body });
   try {
-    const sendEmailResponse = await sendGridMail.send(getMessage(email));
-    console.log("Test email sent successfully");
-    if (!sendEmailResponse) {
-      res.status(StatusCodes.CONFLICT);
+    if (email && email != "") {
+      const sendEmailResponse = await sendGridMail.send(
+        getMessage(email, subject, message)
+      );
+      console.log("Test email sent successfully");
+      if (!sendEmailResponse) {
+        res.status(StatusCodes.CONFLICT);
+      } else {
+        res.status(StatusCodes.CREATED).json({
+          message: sendEmailResponse,
+        });
+      }
     } else {
-      res.status(StatusCodes.CREATED).json({
-        message: sendEmailResponse,
+      res.status(StatusCodes.BAD_REQUEST).json({
+        error: "invalid email",
       });
     }
   } catch (error) {

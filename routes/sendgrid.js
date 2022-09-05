@@ -12,6 +12,6 @@ router.get("/", (req, res) => {
   });
 });
 
-router.get("/:email", controllers.sendEmail);
+router.post("/send", controllers.sendEmail);
 
 module.exports = router;

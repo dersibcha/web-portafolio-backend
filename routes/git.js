@@ -13,10 +13,10 @@ router.get("/", (req, res) => {
   });
 });
 
-router.get("/user/:user", controllers.getUser);
+router.get("/user/", controllers.getUser);
 
-router.get("/repo/:user/:reponame", controllers.getRepo);
+router.get("/repo/:reponame", controllers.getRepo);
 
-router.get("/repos/:user", controllers.getRepos);
+router.get("/repos/", controllers.getRepos);
 
 module.exports = router;
